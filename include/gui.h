@@ -2,13 +2,13 @@
 #define GUI_H
 
 #ifdef _WIN32
-#    ifdef GUI_EXPORTS
-#        define GUI_API __declspec(dllexport)
-#    else
-#        define GUI_API __declspec(dllimport)
-#    endif
-#elif
-#    define GUI_API
+  #ifdef GUI_EXPORTS
+    #define GUI_API __declspec(dllexport)
+  #else
+    #define GUI_API __declspec(dllimport)
+  #endif
+#else
+  #define GUI_API
 #endif
 
 enum AlignFlag
