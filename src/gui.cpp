@@ -1239,6 +1239,18 @@ void PixmapEnd()
   widgetStack.pop();  
 }
 
+int widgetWidth()
+{
+  assert(widgetStack.top()!=0);
+  return widgetStack.top()->width();  
+}
+
+int widgetHeight()
+{
+  assert(widgetStack.top()!=0);
+  return widgetStack.top()->height();    
+}
+
 bool mouseDown(MouseButton button)
 {  
   bool down = false;

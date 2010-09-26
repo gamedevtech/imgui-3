@@ -390,6 +390,9 @@ GUI_API void VBoxLayoutEnd();
 GUI_API void GridLayoutBegin(int id,const Opts& opts = Opts());
 GUI_API void GridLayoutEnd();
 
+GUI_API int widgetWidth();
+GUI_API int widgetHeight();
+
 GUI_API bool mouseDown(MouseButton button);
 GUI_API bool mousePressed(MouseButton button);
 GUI_API bool mouseUp(MouseButton button);
