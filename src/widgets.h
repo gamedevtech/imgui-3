@@ -347,7 +347,9 @@ public slots:
 class IMPixmap : public QLabel
 {
   Q_OBJECT
-public:
+public:    
+  bool widgetWasResized;
+  
   int button2id[5];
 
   enum ButtonState
@@ -365,6 +367,8 @@ public:
 
   IMPixmap()
   {  
+    widgetWasResized = false;
+    
     button2id[Qt::LeftButton] = 0;
     button2id[Qt::RightButton] = 1;
     button2id[Qt::MidButton] = 2;
@@ -378,6 +382,11 @@ public:
     setMouseTracking(true);     
   }
   
+  void resizeEvent(QResizeEvent* event)
+  {
+    widgetWasResized = true;
+  }  
+
   void mousePressEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Down;
@@ -419,6 +428,11 @@ public:
   }
   
 public slots:
+  bool widgetResized()
+  {
+    return widgetWasResized;
+  }
+
   bool mouseDown(int button)
   {
     return mouseButtonStates[button2id[button]]==Down;
@@ -466,6 +480,8 @@ public slots:
 
   void updateState()
   {
+    widgetWasResized = false;
+        
     for(int i=0;i<3;i++)
     {
       if (mouseButtonStates[i] == Down) mouseButtonStates[i] = Pressed;
@@ -487,13 +503,15 @@ class GLContextPrivate : public QWidget
 public:
   QGLWidget* glWidget;
   
+  bool widgetWasResized;
+  
   int button2id[5];
 
   enum ButtonState
   {
     Released,Down,Pressed,Up
   };
-  
+    
   ButtonState mouseButtonStates[3];  
   QPoint mousePosition;
   int wheelDelta;  
@@ -511,7 +529,9 @@ public:
 
     layout->setContentsMargins(0,0,0,0);
     layout->addWidget(glWidget);
-    
+  
+    widgetWasResized = false;
+      
     button2id[Qt::LeftButton] = 0;
     button2id[Qt::RightButton] = 1;
     button2id[Qt::MidButton] = 2;
@@ -546,7 +566,12 @@ public:
   {
     glWidget->swapBuffers();
   }  
-  
+
+  void resizeEvent(QResizeEvent* event)
+  {
+    widgetWasResized = true;
+  }  
+
   void mousePressEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Down;
@@ -588,6 +613,11 @@ public:
   }
   
 public slots:
+  bool widgetResized()
+  {
+    return widgetWasResized;
+  }
+  
   bool mouseDown(int button)
   {
     return mouseButtonStates[button2id[button]]==Down;
@@ -635,6 +665,8 @@ public slots:
 
   void updateState()
   {
+    widgetWasResized = false;
+    
     for(int i=0;i<3;i++)
     {
       if (mouseButtonStates[i] == Down) mouseButtonStates[i] = Pressed;

@@ -1052,6 +1052,8 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
   }
   
   window->setWindowTitle(title);
+  window->show();
+  
   if (QString(iconFileName).isEmpty()==false) window->setWindowIcon(QIcon(iconFileName));
   
   finalizeWidget(window,*opts.opts);
@@ -1063,7 +1065,7 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
 
 void WindowEnd()
 {
-  widgetStack.top()->show();
+  //widgetStack.top()->show();
   
   layoutStack.pop();
   orderStack.pop();
@@ -1171,6 +1173,15 @@ int widgetHeight()
   return widgetStack.top()->height();    
 }
 
+bool widgetResized(int* width,int* height)
+{
+  bool resized = false;
+  QMetaObject::invokeMethod(widgetStack.top(),"widgetResized",Qt::DirectConnection,Q_RETURN_ARG(bool,resized));  
+  if (width!=0) *width = widgetWidth();  
+  if (height!=0) *height = widgetHeight();
+  return resized;
+}
+
 bool mouseDown(MouseButton button)
 {  
   bool down = false;
@@ -1269,7 +1280,7 @@ void guiUpdate()
     }
     else
     {
-      QMetaObject::invokeMethod(widget,"updateState");
+      QMetaObject::invokeMethod(widget,"updateState",Qt::DirectConnection);
     }
   }
   

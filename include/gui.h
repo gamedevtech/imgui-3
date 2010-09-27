@@ -394,6 +394,7 @@ GUI_API void GridLayoutEnd();
 
 GUI_API int widgetWidth();
 GUI_API int widgetHeight();
+GUI_API bool widgetResized(int* width = 0,int* height = 0);
 
 GUI_API bool mouseDown(MouseButton button);
 GUI_API bool mousePressed(MouseButton button);
