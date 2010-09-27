@@ -323,8 +323,8 @@ public:
   {
     lineEditValueHasChanged = false;
     
-    QObject::connect(this,SIGNAL(textEdited(QString&)),
-                     this,SLOT(lineEditValueChanged(QString&)));
+    QObject::connect(this,SIGNAL(textEdited(const QString&)),
+                     this,SLOT(lineEditValueChanged(const QString&)));
   }
   
   bool isHot() const
