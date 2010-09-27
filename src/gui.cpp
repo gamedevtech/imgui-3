@@ -1171,72 +1171,63 @@ int widgetHeight()
 bool mouseDown(MouseButton button)
 {  
   bool down = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mouseDown",Qt::DirectConnection,Q_RETURN_ARG(bool,down),Q_ARG(int,button));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mouseDown",Qt::DirectConnection,Q_RETURN_ARG(bool,down),Q_ARG(int,button));  
   return down;
 }
 
 bool mousePressed(MouseButton button)
 {
   bool pressed = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mousePressed",Qt::DirectConnection,Q_RETURN_ARG(bool,pressed),Q_ARG(int,button));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mousePressed",Qt::DirectConnection,Q_RETURN_ARG(bool,pressed),Q_ARG(int,button));  
   return pressed;
 }
 
 bool mouseUp(MouseButton button)
 {
   bool up = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mouseUp",Qt::DirectConnection,Q_RETURN_ARG(bool,up),Q_ARG(int,button));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mouseUp",Qt::DirectConnection,Q_RETURN_ARG(bool,up),Q_ARG(int,button));  
   return up;
 }
 
 int mouseX()
 {
   int x = 0;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mouseX",Qt::DirectConnection,Q_RETURN_ARG(int,x));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mouseX",Qt::DirectConnection,Q_RETURN_ARG(int,x));  
   return x;
 }
 
 int mouseY()
 {
   int y = 0;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mouseY",Qt::DirectConnection,Q_RETURN_ARG(int,y));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mouseY",Qt::DirectConnection,Q_RETURN_ARG(int,y));  
   return y;
 }
 
 int mouseWheelDelta()
 {
   int d = 0;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"mouseWheelDelta",Qt::DirectConnection,Q_RETURN_ARG(int,d));  
+  QMetaObject::invokeMethod(widgetStack.top(),"mouseWheelDelta",Qt::DirectConnection,Q_RETURN_ARG(int,d));  
   return d;
 }
 
 bool keyDown(Key key)
 {
   bool down = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"keyDown",Qt::DirectConnection,Q_RETURN_ARG(bool,down),Q_ARG(Qt::Key,((Qt::Key)key)));  
+  QMetaObject::invokeMethod(widgetStack.top(),"keyDown",Qt::DirectConnection,Q_RETURN_ARG(bool,down),Q_ARG(Qt::Key,((Qt::Key)key)));  
   return down;    
 }
 
 bool keyPressed(Key key)
 {
   bool pressed = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"keyPressed",Qt::DirectConnection,Q_RETURN_ARG(bool,pressed),Q_ARG(Qt::Key,((Qt::Key)key)));  
+  QMetaObject::invokeMethod(widgetStack.top(),"keyPressed",Qt::DirectConnection,Q_RETURN_ARG(bool,pressed),Q_ARG(Qt::Key,((Qt::Key)key)));  
   return pressed;    
 }
 
 bool keyUp(Key key)
 {
   bool up = false;
-  QWidget* widget = widgetStack.top();
-  QMetaObject::invokeMethod(widget,"keyUp",Qt::DirectConnection,Q_RETURN_ARG(bool,up),Q_ARG(Qt::Key,((Qt::Key)key)));  
+  QMetaObject::invokeMethod(widgetStack.top(),"keyUp",Qt::DirectConnection,Q_RETURN_ARG(bool,up),Q_ARG(Qt::Key,((Qt::Key)key)));  
   return up;    
 }
 
