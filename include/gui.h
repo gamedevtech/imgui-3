@@ -378,7 +378,7 @@ GUI_API void FrameEnd();
 GUI_API void GroupBoxBegin(int id,const char* text,const Opts& opts = Opts());
 GUI_API void GroupBoxEnd();
 
-GUI_API void PixmapBegin(int id,const unsigned char* data,int width,int height,const Opts& opts = Opts());
+GUI_API void PixmapBegin(int id,const Opts& opts = Opts());
 GUI_API void PixmapEnd();
 
 GUI_API void HBoxLayoutBegin(int id,const Opts& opts = Opts());

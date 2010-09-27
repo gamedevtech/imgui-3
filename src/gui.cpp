@@ -1129,7 +1129,7 @@ void GroupBoxEnd()
   widgetStack.pop();
 }
 
-void PixmapBegin(int id,const unsigned char* data,int width,int height,const Opts& opts)
+void PixmapBegin(int id,const Opts& opts)
 {
   IMPixmap* pixmap = fetchCachedWidget<IMPixmap>(id);
 
@@ -1141,8 +1141,6 @@ void PixmapBegin(int id,const unsigned char* data,int width,int height,const Opt
   }
   
   finalizeWidget(pixmap,*opts.opts);
-
-  pixmap->setPixmap(QPixmap::fromImage(QImage(data,width,height,QImage::Format_ARGB32)));
 
   layoutStack.push(0);  
   orderStack.push(0);
