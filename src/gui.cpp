@@ -1154,6 +1154,11 @@ void PixmapEnd()
   widgetStack.pop();  
 }
 
+void pixmapBlit(int width,int height,const unsigned char* data)
+{
+  ((IMPixmap*)widgetStack.top())->setPixmap(QPixmap::fromImage(QImage(data,width,height,QImage::Format_ARGB32)));  
+}
+
 int widgetWidth()
 {
   assert(widgetStack.top()!=0);

@@ -381,6 +381,8 @@ GUI_API void GroupBoxEnd();
 GUI_API void PixmapBegin(int id,const Opts& opts = Opts());
 GUI_API void PixmapEnd();
 
+GUI_API void pixmapBlit(int width,int height,const unsigned char* data);
+
 GUI_API void HBoxLayoutBegin(int id,const Opts& opts = Opts());
 GUI_API void HBoxLayoutEnd();
 
