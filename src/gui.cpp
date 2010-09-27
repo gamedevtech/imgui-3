@@ -401,27 +401,7 @@ void insertToLayout(QObject* object,QLayout* layout,const OptsPrivate& opts)
   //parentLayout[object] = layout;
 }
 
-/*
-void reparentWidget(QWidget* widget)
-{ 
-  assert(layoutStack.top()!=0);
-  
-  if (parentLayout[widget] != layoutStack.top())
-  {
-    printf("reparenting %s\n",qPrintable(widget->objectName()));
-    
-    //parentLayout[widget]->removeWidget(widget);
-    widget->setParent(0); //According to Qt documentation, this shouldn't be necessary, "The layout will automatically reparent the widgets (using QWidget::setParent()) so that they are children of the widget on which the layout is installed"
-    
-    ((QBoxLayout*)layoutStack.top())->insertWidget(orderStack.top(),widget);
-    parentLayout[widget] = layoutStack.top();
-
-    order[widget] = orderStack.top();
-  }
-}
-*/
-
-void reparentWidget2(QWidget* widget,const OptsPrivate& opts)
+void reparentWidget(QWidget* widget,const OptsPrivate& opts)
 { 
   assert(layoutStack.top()!=0);
   
@@ -438,43 +418,10 @@ void reparentWidget2(QWidget* widget,const OptsPrivate& opts)
   }
 }
 
-
 // Widgets that are inside VBox or HBox layout must appear in the same order in which their respective functions are called.
 // If this ordering changed from the last call to update() then each affected widget must be reinserted to it's parentLayout at correct index
 // given by the value at the top of the orderStack.
-/*
-void reinsertWidget(QWidget* widget)
-{
-  if (orderStack.top()!=order[widget])
-  {
-    printf("reinserting %s\n",qPrintable(widget->objectName()));
-    parentLayout[widget]->removeWidget(widget);
-    widget->setParent(0);
-
-    ((QBoxLayout*)parentLayout[widget])->insertWidget(orderStack.top(),widget);
-    order[widget] = orderStack.top();
-  }
-}
-*/
-
-/*
-// reinsert by mel operovat nad parentLayoutem, ne nad layoutStack.top()em jako ted.
-void reinsertWidget2(QWidget* widget,const OptsPrivate& opts)
-{
-  if (needsReinsert(widget,layoutStack.top(),opts))
-  {
-    printf("reinserting %s\n",qPrintable(widget->objectName()));
-    parentLayout[widget]->removeWidget(widget);    
-    widget->setParent(0); //According to Qt documentation, this shouldn't be necessary, "The layout will automatically reparent the widgets (using QWidget::setParent()) so that they are children of the widget on which the layout is installed"
-    parentLayout[widget] = (QLayout*)-1;
-
-    insertToLayout(widget,layoutStack.top(),opts);
-    parentLayout[widget] = layoutStack.top();
-  }
-}
-*/
-// reinsert by mel operovat nad parentLayoutem, ne nad layoutStack.top()em jako ted.
-void reinsertWidget2(QWidget* widget,const OptsPrivate& opts)
+void reinsertWidget(QWidget* widget,const OptsPrivate& opts)
 {
   assert(parentLayout[widget]!=0); 
   assert(parentLayout[widget]!=(QLayout*)-1);
@@ -597,7 +544,7 @@ void refresh(QObject* object)
   fresh.insert(object);   
 }
 
-void initializeWidget2(int id,QWidget* widget,const OptsPrivate& opts)
+void initializeWidget(int id,QWidget* widget,const OptsPrivate& opts)
 {
   widget->setObjectName(QString("%1[%2]").arg(widget->metaObject()->className()).arg(id));
   
@@ -656,7 +603,7 @@ void initializeWidget2(int id,QWidget* widget,const OptsPrivate& opts)
   widget->setProperty("id",id);
 }
 
-void finalizeWidget2(QWidget* widget,const OptsPrivate& opts)
+void finalizeWidget(QWidget* widget,const OptsPrivate& opts)
 {
   // this is toplevel window
   if (widgetStack.empty())
@@ -666,8 +613,8 @@ void finalizeWidget2(QWidget* widget,const OptsPrivate& opts)
     return;
   }
 
-  reparentWidget2(widget,opts);
-  reinsertWidget2(widget,opts);
+  reparentWidget(widget,opts);
+  reinsertWidget(widget,opts);
   refresh(widget);
   
   applyOpts(widget,opts);
@@ -807,12 +754,12 @@ void Label(int id,const char* text,const Opts& opts)
   {
     label = new QLabel(text);
     
-    initializeWidget2(id,label,*opts.opts);
+    initializeWidget(id,label,*opts.opts);
   }
   
   label->setText(text);
   
-  finalizeWidget2(label,*opts.opts);
+  finalizeWidget(label,*opts.opts);
 }
 
 template<int Style> void Separator(int id,const Opts& opts)
@@ -828,10 +775,10 @@ template<int Style> void Separator(int id,const Opts& opts)
     
     separator->setFrameStyle(Style | QFrame::Sunken);
     
-    initializeWidget2(id,separator,*opts.opts);
+    initializeWidget(id,separator,*opts.opts);
   }
   
-  finalizeWidget2(separator,*opts.opts);  
+  finalizeWidget(separator,*opts.opts);  
 }
 
 void HSeparator(int id,const Opts& opts)
@@ -855,7 +802,7 @@ bool Button(int id,const char* iconFileName,const char* text,const Opts& opts)
   {
     button = new IMButton(text);    
    
-    initializeWidget2(id,button,*opts.opts);
+    initializeWidget(id,button,*opts.opts);
   }
   
   if (QString(iconFileName).isEmpty()==false)
@@ -865,7 +812,7 @@ bool Button(int id,const char* iconFileName,const char* text,const Opts& opts)
     button->setIconSize(icon.availableSizes()[0]);    
   }
 
-  finalizeWidget2(button,*opts.opts);  
+  finalizeWidget(button,*opts.opts);  
 
   return button->buttonWasClicked;
 }
@@ -886,7 +833,7 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
   {
     toggleButton = new IMToggleButton(text);    
    
-    initializeWidget2(id,toggleButton,*opts.opts);
+    initializeWidget(id,toggleButton,*opts.opts);
   }
   /*
   if (QString(iconFileName).isEmpty()==false)
@@ -904,7 +851,7 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
   
   *state = toggleButton->isChecked();
       
-  finalizeWidget2(toggleButton,*opts.opts);  
+  finalizeWidget(toggleButton,*opts.opts);  
 
   return toggleButton->buttonWasToggled;
 }
@@ -920,7 +867,7 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
   {
     checkBox = new IMCheckBox(text);    
    
-    initializeWidget2(id,checkBox,*opts.opts);
+    initializeWidget(id,checkBox,*opts.opts);
   }
   /*
   if (QString(iconFileName).isEmpty()==false)
@@ -938,7 +885,7 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
   
   *state = checkBox->isChecked();
       
-  finalizeWidget2(checkBox,*opts.opts);  
+  finalizeWidget(checkBox,*opts.opts);  
 
   return checkBox->checkBoxStateHasChanged;
 }
@@ -967,10 +914,10 @@ template<typename T,int orientation> bool AbstractSlider(int id,int min,int max,
   {
     slider = new T();
     slider->setOrientation((Qt::Orientation)orientation);
-    initializeWidget2(id,slider,*opts.opts);
+    initializeWidget(id,slider,*opts.opts);
   }
   
-  finalizeWidget2(slider,*opts.opts);  
+  finalizeWidget(slider,*opts.opts);  
   
   slider->setRange(min,max);
   
@@ -1008,10 +955,10 @@ bool SpinBox(int id,int min,int max,int* value,const Opts& opts)
   if (spinBox==0)
   {
     spinBox = new IMSpinBox();
-    initializeWidget2(id,spinBox,*opts.opts);
+    initializeWidget(id,spinBox,*opts.opts);
   }
   
-  finalizeWidget2(spinBox,*opts.opts);  
+  finalizeWidget(spinBox,*opts.opts);  
   
   spinBox->setRange(min,max);
   
@@ -1029,10 +976,10 @@ bool SpinBox(int id,float min,float max,float* value,const Opts& opts)
   if (spinBox==0)
   {
     spinBox = new IMDoubleSpinBox();
-    initializeWidget2(id,spinBox,*opts.opts);
+    initializeWidget(id,spinBox,*opts.opts);
   }
   
-  finalizeWidget2(spinBox,*opts.opts);  
+  finalizeWidget(spinBox,*opts.opts);  
   
   spinBox->setRange(min,max);
   
@@ -1051,10 +998,10 @@ bool LineEdit(int id,int* value,const Opts& opts)
   {
     lineEdit = new IMLineEdit();
     lineEdit->setValidator(new QIntValidator());
-    initializeWidget2(id,lineEdit,*opts.opts);
+    initializeWidget(id,lineEdit,*opts.opts);
   }
   
-  finalizeWidget2(lineEdit,*opts.opts);  
+  finalizeWidget(lineEdit,*opts.opts);  
     
   if (lineEdit->isHot()==false) lineEdit->setText(QString().setNum(*value));
   
@@ -1071,10 +1018,10 @@ bool LineEdit(int id,float* value,const Opts& opts)
   {
     lineEdit = new IMLineEdit();    
     lineEdit->setValidator(new QDoubleValidator(0));
-    initializeWidget2(id,lineEdit,*opts.opts);
+    initializeWidget(id,lineEdit,*opts.opts);
   }
   
-  finalizeWidget2(lineEdit,*opts.opts);  
+  finalizeWidget(lineEdit,*opts.opts);  
     
   if (lineEdit->isHot()==false) lineEdit->setText(QString().setNum(*value,'f'));
   
@@ -1103,10 +1050,10 @@ void Spacer(int id,const Opts& opts)
       frame->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::Maximum);
     }
     
-    initializeWidget2(id,frame,*opts.opts);
+    initializeWidget(id,frame,*opts.opts);
   }
 
-  finalizeWidget2(frame,*opts.opts);  
+  finalizeWidget(frame,*opts.opts);  
 }
 
 void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& opts)
@@ -1122,13 +1069,13 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
   {
     window = new IMWindow();
 
-    initializeWidget2(id,window,*opts.opts);
+    initializeWidget(id,window,*opts.opts);
   }
   
   window->setWindowTitle(title);
   if (QString(iconFileName).isEmpty()==false) window->setWindowIcon(QIcon(iconFileName));
   
-  finalizeWidget2(window,*opts.opts);
+  finalizeWidget(window,*opts.opts);
 
   layoutStack.push(0);  
   orderStack.push(0);
@@ -1164,10 +1111,10 @@ void FrameBegin(int id,const Opts& opts)
   {
     frame = new QFrame();
     
-    initializeWidget2(id,frame,*opts.opts);
+    initializeWidget(id,frame,*opts.opts);
   }
   
-  finalizeWidget2(frame,*opts.opts);
+  finalizeWidget(frame,*opts.opts);
 
   layoutStack.push(0);  
   orderStack.push(0);
@@ -1192,10 +1139,10 @@ void GroupBoxBegin(int id,const char* text,const Opts& opts)
   {
     groupBox = new QGroupBox(text);
     
-    initializeWidget2(id,groupBox,*opts.opts);
+    initializeWidget(id,groupBox,*opts.opts);
   }
   
-  finalizeWidget2(groupBox,*opts.opts);
+  finalizeWidget(groupBox,*opts.opts);
 
   layoutStack.push(0);  
   orderStack.push(0);
@@ -1220,10 +1167,10 @@ void PixmapBegin(int id,const unsigned char* data,int width,int height,const Opt
   {
     pixmap = new IMPixmap();
     
-    initializeWidget2(id,pixmap,*opts.opts);
+    initializeWidget(id,pixmap,*opts.opts);
   }
   
-  finalizeWidget2(pixmap,*opts.opts);
+  finalizeWidget(pixmap,*opts.opts);
 
   pixmap->setPixmap(QPixmap::fromImage(QImage(data,width,height,QImage::Format_ARGB32)));
 
@@ -1475,10 +1422,10 @@ void GLWidgetBegin(int id,GLContext* ctx,const Opts& opts)
   {
     glWidget = ctx->glContextPrivate;
     
-    initializeWidget2(id,glWidget,*opts.opts);
+    initializeWidget(id,glWidget,*opts.opts);
   }
   
-  finalizeWidget2(glWidget,*opts.opts);
+  finalizeWidget(glWidget,*opts.opts);
   
   if (glWidget->isVisible()==false) glWidget->show();
   
