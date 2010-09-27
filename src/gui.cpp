@@ -743,14 +743,27 @@ void GridLayoutEnd()
   orderStack.pop();
 }
 
-void Label(int id,const char* text,const Opts& opts)
+template<typename T> T* fetchCachedWidget(int id)
 {
-  QLabel* label = NULL;
   if (widgets.contains(id))
   {
-    label = (QLabel*)widgets[id];
+    QWidget* widget = widgets[id];
+    
+    assert(qobject_cast<T*>(widget)!=0); // probably due to id collision
+    
+    return (T*)widget;
   }
   else
+  {
+    return 0;
+  }  
+}
+
+void Label(int id,const char* text,const Opts& opts)
+{
+  QLabel* label = fetchCachedWidget<QLabel>(id);
+  
+  if (label==0)
   {
     label = new QLabel(text);
     
@@ -764,12 +777,9 @@ void Label(int id,const char* text,const Opts& opts)
 
 template<int Style> void Separator(int id,const Opts& opts)
 {
-  QFrame* separator = NULL;
-  if (widgets.contains(id))
-  {
-    separator = (QFrame*)widgets[id];
-  }
-  else
+  QFrame* separator = fetchCachedWidget<QFrame>(id);
+
+  if (separator==0)
   {
     separator = new QFrame();
     
@@ -793,12 +803,9 @@ void VSeparator(int id,const Opts& opts)
 
 bool Button(int id,const char* iconFileName,const char* text,const Opts& opts)
 {
-  IMButton* button = NULL;
-  if (widgets.contains(id))
-  {
-    button = (IMButton*)widgets[id];
-  }
-  else
+  IMButton* button = fetchCachedWidget<IMButton>(id);
+
+  if (button==0)
   {
     button = new IMButton(text);    
    
@@ -824,12 +831,9 @@ bool Button(int id,const char* text,const Opts& opts)
 
 bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,const Opts& opts)
 {
-  IMToggleButton* toggleButton = NULL;
-  if (widgets.contains(id))
-  {
-    toggleButton = (IMToggleButton*)widgets[id];
-  }
-  else
+  IMToggleButton* toggleButton = fetchCachedWidget<IMToggleButton>(id);
+
+  if (toggleButton==0)
   {
     toggleButton = new IMToggleButton(text);    
    
@@ -858,12 +862,9 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
 
 bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
 {
-  IMCheckBox* checkBox = NULL;
-  if (widgets.contains(id))
-  {
-    checkBox = (IMCheckBox*)widgets[id];
-  }
-  else
+  IMCheckBox* checkBox = fetchCachedWidget<IMCheckBox>(id);
+
+  if (checkBox==0)
   {
     checkBox = new IMCheckBox(text);    
    
@@ -889,22 +890,6 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
 
   return checkBox->checkBoxStateHasChanged;
 }
-
-template<typename T> T* fetchCachedWidget(int id)
-{
-  if (widgets.contains(id))
-  {
-    QWidget* widget = widgets[id];
-    
-    assert(qobject_cast<T*>(widget)!=0); // probably due to id collision
-    
-    return (T*)widget;
-  }
-  else
-  {
-    return 0;
-  }  
-};
 
 template<typename T,int orientation> bool AbstractSlider(int id,int min,int max,int* value,const Opts& opts)
 {
@@ -1032,12 +1017,9 @@ bool LineEdit(int id,float* value,const Opts& opts)
 
 void Spacer(int id,const Opts& opts)
 {
-  QFrame* frame = NULL;
-  if (widgets.contains(id))
-  {
-    frame = (QFrame*)widgets[id];
-  }
-  else
+  QFrame* frame = fetchCachedWidget<QFrame>(id);
+  
+  if (frame==0)
   {
     frame = new QFrame();    
     
@@ -1060,12 +1042,9 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
 {
   assert(widgetStack.empty()==true);
 
-  IMWindow* window = NULL;
-  if (widgets.contains(id))
-  {
-    window = (IMWindow*)widgets[id];
-  }
-  else
+  IMWindow* window = fetchCachedWidget<IMWindow>(id);
+  
+  if(window==0)
   {
     window = new IMWindow();
 
@@ -1102,12 +1081,9 @@ bool windowCloseRequest()
 
 void FrameBegin(int id,const Opts& opts)
 {
-  QFrame* frame = NULL;
-  if (widgets.contains(id))
-  {
-    frame = (QFrame*)widgets[id];
-  }
-  else
+  QFrame* frame = fetchCachedWidget<QFrame>(id);
+
+  if (frame==0)
   {
     frame = new QFrame();
     
@@ -1130,12 +1106,9 @@ void FrameEnd()
 
 void GroupBoxBegin(int id,const char* text,const Opts& opts)
 {
-  QGroupBox* groupBox = NULL;
-  if (widgets.contains(id))
-  {
-    groupBox = (QGroupBox*)widgets[id];
-  }
-  else
+  QGroupBox* groupBox = fetchCachedWidget<QGroupBox>(id);
+
+  if (groupBox==0)
   {
     groupBox = new QGroupBox(text);
     
@@ -1158,12 +1131,9 @@ void GroupBoxEnd()
 
 void PixmapBegin(int id,const unsigned char* data,int width,int height,const Opts& opts)
 {
-  IMPixmap* pixmap = NULL;
-  if (widgets.contains(id))
-  {
-    pixmap = (IMPixmap*)widgets[id];
-  }
-  else
+  IMPixmap* pixmap = fetchCachedWidget<IMPixmap>(id);
+
+  if (pixmap==0)
   {
     pixmap = new IMPixmap();
     
