@@ -1273,7 +1273,6 @@ bool keyUp(Key key)
 void guiInit(int& argc,char** argv)
 {
   app = new QApplication(argc,argv);
-  app->setStyle(new QPlastiqueStyle);
 }
 
 void guiInit()
