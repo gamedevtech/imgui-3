@@ -1,0 +1,50 @@
+TODO
+====
+
+* Kazda funkce by mela kontrolovat ze byla knihovna zinicializovana pomoci guiInit
+* Debug log a warningy pomoci qDebug a qWarning
+* Float SpinBox + vsechny properties pro spinbox ve float verzi
+* Float Slider + vsechny properties pro slider ve float verzi
+* Pass-through api ( value = HSlider(ID,0,10,value,[Opts]); ) pro widgety ktery manipulujou hodnotu
+* Gobalni keyDown/keyPress/keyUp ?
+* Kdyz widget ztrati focus, nedostane keyReleasedEvent a klavesa zustane ve stavu keyPressed
+  - zakazat zmenu kdyz je nejaka klavasa ve stavu keyPressed?
+  - grabovat klavesnici?
+  - nastavit stav keyUp vsem klavesam ktery byly ve stavu pressed kdyz widget ztrati focus?
+  - dostane novej widget keyPressedEvent nebo jen keyReleasedEvent?
+* Kdyz ma slider focus a mouseWheel eventy dostava jeste jinej widget (napr GLWidget),
+  kterej na zaklade nich modifikuje stejnou hodnotu jako slider tak to blbne
+* Scroll Area
+* Radio (+ Radio Group / Switch?)
+* ComboBox
+* TabBar
+* Menu
+* Renderovani do bitmapy
+* Vymyslet api aby sli delat uzivatelsky modalni dialogy (s vlastni while smyckou)
+* Vymyslet api aby slo udelat okno s nejakou zadanou inicialni velikosti a zaroven slo volne resizovat
+* Funkce ktery pouzivaj STL kontejnery ohranicit makrama aby v pripade ze je uzivatel nebude potrebovat 
+  sli vyradit z kompilace (inkludovani <string> zvetsi dobu kompilace o 300ms)
+* Ve funkci needsReinsert kontrolovat jestli se zmenil Stretch a Alignment
+* Nastaveni formatu (alfa,depth,double/triple buffering,stereo,antialiasing) u GLContextu
+* Size Grip
+* FileOpenDialog
+* FileSaveDialog
+* MessageBox
+* Opts().aspectRatio(float) - widget si pri resizovani udrzuje fixni pomer stran
+* Opts:
+    Opts().toolTip
+    Opts().shortcut  
+    Opts().wrap // SpinBox
+    Opts().buttonSymbols //SpinBox
+* Low-level C api:
+    opts* handle = opts_new()
+    opts_cell(handle,0,0);
+    opts_span(handle,2,1);
+  
+    Buttton(id,text,handle);
+  
+    opts_delete(handle);  
+    
+    opts_cell(opts* opts,int row,int column) { opts->cell(row,column); }
+    Button(int id,char* text,Opts* opts);
+* Python binding pomoci ctypes a low-level C api
