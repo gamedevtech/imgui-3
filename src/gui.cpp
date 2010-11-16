@@ -1281,7 +1281,10 @@ void guiUpdate()
     }
     else
     {
-      QMetaObject::invokeMethod(widget,"updateState",Qt::DirectConnection);
+      if (widget->metaObject()->indexOfMethod("updateState()") != -1)
+      {
+        QMetaObject::invokeMethod(widget,"updateState",Qt::DirectConnection);
+      }
     }
   }
   
