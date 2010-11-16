@@ -17,6 +17,7 @@
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QVector>
 #include <QSet>
 #include <QStack>
 #include <QHash>
@@ -1263,7 +1264,7 @@ void guiUpdate()
   assert(layoutStack.empty()==true);
   assert(orderStack.empty()==true);
   
-  std::vector<int> remlist;
+  QVector<int> remlist;
 
   QHashIterator<int,QWidget*> it(widgets);
   
@@ -1315,7 +1316,7 @@ void guiUpdate()
 
 void guiCleanup()
 {
-  std::vector<int> remlist;
+  QVector<int> remlist;
 
   QHashIterator<int,QWidget*> it(widgets);
   
