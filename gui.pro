@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG = release qt dll embed_manifest_dll
+CONFIG = release qt shared embed_manifest_dll
 
 DESTDIR = lib
 OBJECTS_DIR = tmp
@@ -12,3 +12,8 @@ INCLUDEPATH += include
 DEFINES += GUI_EXPORTS
 
 QT += opengl
+
+LIBS += $$QMAKE_LIBS_CORE
+LIBS += $$QMAKE_LIBS_GUI
+LIBS += $$QMAKE_LIBS_NETWORK
+LIBS += $$QMAKE_LIBS_OPENGL
