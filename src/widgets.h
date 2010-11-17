@@ -18,7 +18,7 @@
 #include <QSet>
 
 #include <cstdio>
-
+  
 class IMWindow : public QWidget
 {
   Q_OBJECT
@@ -679,7 +679,7 @@ public slots:
     
     keyDownSet.clear();
     keyUpSet.clear();
-  }  
+  }
 };
 
 #endif

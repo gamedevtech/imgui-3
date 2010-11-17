@@ -34,6 +34,8 @@
 #include <QPlastiqueStyle>
 #include <QFileDialog>
 
+#include <QDebug>
+
 #include <QGLFormat>
 #include <QGLContext>
 #include <QGLWidget>
@@ -117,7 +119,7 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
     }
     else
     {
-      printf("Warning: invalid option \"%s\"\n!",qPrintable(opt));
+      qWarning("Warning: invalid option \"%s\"!",qPrintable(opt));
     }
   }
   
@@ -142,7 +144,7 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
     }
     else
     {
-      printf("applyOpts FAIL!\n"); fflush(stdout);
+      qWarning("applyOpts FAIL!");
     }    
   }      
 }
@@ -408,7 +410,7 @@ void reparentWidget(QWidget* widget,const OptsPrivate& opts)
   
   if (parentLayout[widget] != layoutStack.top())
   {
-    printf("reparenting %s\n",qPrintable(widget->objectName()));
+    qDebug("reparenting widget %s",qPrintable(widget->objectName()));
     
     if (parentLayout[widget]!=((QLayout*)-1)) parentLayout[widget]->removeWidget(widget);        
     widget->setParent(0); //According to Qt documentation, this shouldn't be necessary, "The layout will automatically reparent the widgets (using QWidget::setParent()) so that they are children of the widget on which the layout is installed"
@@ -429,7 +431,7 @@ void reinsertWidget(QWidget* widget,const OptsPrivate& opts)
   
   if (needsReinsert(widget,parentLayout[widget],opts))
   {
-    printf("reinserting %s\n",qPrintable(widget->objectName()));
+    qDebug("reinserting widget %s",qPrintable(widget->objectName()));
     parentLayout[widget]->removeWidget(widget);    
     insertToLayout(widget,parentLayout[widget],opts);
   }
@@ -437,7 +439,7 @@ void reinsertWidget(QWidget* widget,const OptsPrivate& opts)
 
 void deleteLayout(QLayout* layout)
 {
-  printf("deleting layout %s\n",qPrintable(layout->objectName()));fflush(stdout);
+  qDebug("deleting layout %s",qPrintable(layout->objectName()));fflush(stdout);
   
   // QLayout si udrzuje reference na svoje sub-layouty jako potomky pomoci children mechanizmu QObjectu.
   // V momente kdy smazu layout, smaze jeho destruktor i vsechny svoje children sub-layouty,
@@ -502,7 +504,7 @@ void deleteLayout(QLayout* layout)
 
 void deleteWidget(QWidget* widget)
 {
-  printf("deleting widget %s\n",qPrintable(widget->objectName()));fflush(stdout);
+  qDebug("deleting widget %s",qPrintable(widget->objectName()));fflush(stdout);
        
   if (widget->layout()!=0) deleteLayout(widget->layout());  
   
@@ -549,7 +551,7 @@ void initializeWidget(int id,QWidget* widget,const OptsPrivate& opts)
 {
   widget->setObjectName(QString("%1[%2]").arg(widget->metaObject()->className()).arg(id));
   
-  printf("creating %s\n",qPrintable(widget->objectName()));
+  qDebug("creating widget %s",qPrintable(widget->objectName()));
  
   // this is toplevel window
   if (widgetStack.empty())
@@ -654,7 +656,8 @@ template<typename T> T* processLayout(int id,const OptsPrivate& opts)
     layout = new T();
     layout->setObjectName(QString("%1[%2]").arg(layout->metaObject()->className()).arg(id));
 
-    printf("creating %s\n",qPrintable(layout->objectName()));
+    qDebug("creating layout %s",qPrintable(layout->objectName()));
+
 
     layout->setProperty("id",id);
     layouts[id] = layout;
@@ -685,7 +688,7 @@ template<typename T> T* processLayout(int id,const OptsPrivate& opts)
       // REINSERT PHASE
       if (needsReinsert(layout,layoutStack.top(),opts))
       {    
-        printf("reinserting %s\n",qPrintable(layout->objectName()));
+        qDebug("reinserting %s",qPrintable(layout->objectName()));
     
         parentLayout[layout]->removeItem(layout);
         layout->setParent(0);
