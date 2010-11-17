@@ -1160,6 +1160,26 @@ void PixmapEnd()
   widgetStack.pop();  
 }
 
+char* FileOpenDialog(const char* caption,const char* dir,const char* filter)
+{
+  // XXX
+  static QByteArray fileName;
+  fileName = QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit();
+  if (fileName.size()==0) return 0;
+  fileName.append('\0');  
+  return fileName.data();
+}
+
+char* FileSaveDialog(const char* caption,const char* dir,const char* filter)
+{
+  // XXX
+  static QByteArray fileName;
+  fileName = QFileDialog::getSaveFileName(0,caption,dir,filter).toLocal8Bit();  
+  if (fileName.size()==0) return 0;
+  fileName.append('\0');  
+  return fileName.data();
+}
+
 void pixmapBlit(int width,int height,const unsigned char* data)
 {
   ((IMPixmap*)widgetStack.top())->setPixmap(QPixmap::fromImage(QImage(data,width,height,QImage::Format_ARGB32)));  
