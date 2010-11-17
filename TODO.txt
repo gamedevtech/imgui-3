@@ -2,7 +2,6 @@ TODO
 ====
 
 * Kazda funkce by mela kontrolovat ze byla knihovna zinicializovana pomoci guiInit
-* Debug log a warningy pomoci qDebug a qWarning
 * Float SpinBox + vsechny properties pro spinbox ve float verzi
 * Float Slider + vsechny properties pro slider ve float verzi
 * Pass-through api ( value = HSlider(ID,0,10,value,[Opts]); ) pro widgety ktery manipulujou hodnotu
@@ -27,8 +26,7 @@ TODO
 * Ve funkci needsReinsert kontrolovat jestli se zmenil Stretch a Alignment
 * Nastaveni formatu (alfa,depth,double/triple buffering,stereo,antialiasing) u GLContextu
 * Size Grip
-* FileOpenDialog
-* FileSaveDialog
+* MultiFileOpenDialog ( char** MultiFileOpenDialog(int* count,const char* caption=0,...); )
 * MessageBox
 * Opts().aspectRatio(float) - widget si pri resizovani udrzuje fixni pomer stran
 * Opts:
