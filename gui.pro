@@ -10,6 +10,7 @@ SOURCES = src/gui.cpp
 INCLUDEPATH += include
 
 DEFINES += GUI_EXPORTS
+DEFINES += QT_NO_DEBUG_OUTPUT
 
 QT += opengl
 
