@@ -32,6 +32,7 @@
 #include <QPixmap>
 #include <QCleanlooksStyle>
 #include <QPlastiqueStyle>
+#include <QDialog>
 #include <QFileDialog>
 
 #include <QDebug>
@@ -1163,21 +1164,27 @@ void PixmapEnd()
 char* FileOpenDialog(const char* caption,const char* dir,const char* filter)
 {
   // XXX
-  static QByteArray fileName;
-  fileName = QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit();
+  /*
+  static QByteArray fileName;  
+  fileName = dialog.QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit();
   if (fileName.size()==0) return 0;
   fileName.append('\0');  
   return fileName.data();
+  */
+  return 0;
 }
 
 char* FileSaveDialog(const char* caption,const char* dir,const char* filter)
 {
   // XXX
+  /*
   static QByteArray fileName;
   fileName = QFileDialog::getSaveFileName(0,caption,dir,filter).toLocal8Bit();  
   if (fileName.size()==0) return 0;
   fileName.append('\0');  
   return fileName.data();
+  */
+  return 0;
 }
 
 void pixmapBlit(int width,int height,const unsigned char* data)
