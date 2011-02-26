@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QRadioButton>
 #include <QLineEdit>
 #include <QCloseEvent>
 #include <QPushButton>
@@ -99,6 +100,39 @@ public slots:
   {
     buttonWasToggled = true;  
   }  
+};
+
+class IMRadioButton : public QRadioButton
+{
+  Q_OBJECT
+public:
+  bool radioButtonStateHasChanged;
+
+  IMRadioButton(const QString& text) : QRadioButton(text)
+  { 
+    setAutoExclusive(false);
+   
+    radioButtonStateHasChanged = false;
+    
+    QObject::connect(this,SIGNAL(toggled(bool)),
+                     this,SLOT(radioButtonToggled(bool)));
+  }
+
+  bool isHot() const
+  {
+    return false;//hasFocus();
+  }
+  
+public slots:  
+  void updateState()
+  {
+    radioButtonStateHasChanged = false;
+  }
+
+  void radioButtonToggled(bool checked)
+  {
+    radioButtonStateHasChanged = true;  
+  }    
 };
 
 class IMCheckBox : public QCheckBox

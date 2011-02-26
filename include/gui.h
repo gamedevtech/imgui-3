@@ -347,6 +347,8 @@ GUI_API void VSeparator(int id,const Opts& opts = Opts());
 GUI_API bool Button(int id,const char* text,const Opts& opts = Opts());
 GUI_API bool Button(int id,const char* iconFileName,const char* text,const Opts& opts = Opts());
 
+GUI_API bool RadioButton(int id,const char* text,int tag,int* value,const Opts& opts = Opts());
+
 GUI_API bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,const Opts& opts = Opts());
 
 GUI_API bool CheckBox(int id,const char* text,bool* state,const Opts& opts = Opts());

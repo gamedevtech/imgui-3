@@ -865,6 +865,44 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
   return toggleButton->buttonWasToggled;
 }
 
+bool RadioButton(int id,const char* text,int tag,int* value,const Opts& opts)
+{
+  IMRadioButton* radioButton = fetchCachedWidget<IMRadioButton>(id);
+
+  if (radioButton==0)
+  {
+    radioButton = new IMRadioButton(text);    
+   
+    initializeWidget(id,radioButton,*opts.opts);
+  }
+  
+  radioButton->setText(text);
+  
+  bool changed = false;
+  
+  if (radioButton->radioButtonStateHasChanged)
+  {
+    if (*value != tag) changed = true;
+    *value = tag;    
+  }
+  else
+  {
+    if (*value==tag && radioButton->isChecked()==false)
+    {
+      radioButton->setChecked(true);
+    }
+    if (*value!=tag && radioButton->isChecked()==true)
+    {
+      radioButton->setChecked(false);      
+    }
+  }
+        
+  finalizeWidget(radioButton,*opts.opts);  
+  
+  return changed;
+}
+
+
 bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
 {
   IMCheckBox* checkBox = fetchCachedWidget<IMCheckBox>(id);
