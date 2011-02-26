@@ -353,6 +353,8 @@ GUI_API bool ToggleButton(int id,const char* iconFileName,const char* text,bool*
 
 GUI_API bool CheckBox(int id,const char* text,bool* state,const Opts& opts = Opts());
 
+GUI_API bool ComboBox(int id,int count,char** texts,int* index,const Opts& opts = Opts());
+
 GUI_API bool SpinBox(int id,int min,int max,int* value,const Opts& opts = Opts());
 GUI_API bool SpinBox(int id,float min,float max,float* value,const Opts& opts = Opts());
 

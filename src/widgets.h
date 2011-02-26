@@ -8,6 +8,7 @@
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QRadioButton>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QCloseEvent>
 #include <QPushButton>
@@ -163,6 +164,33 @@ public slots:
   void checkBoxToggled(bool checked)
   {
     checkBoxStateHasChanged = true;  
+  }  
+};
+
+class IMComboBox : public QComboBox
+{
+  Q_OBJECT
+public:
+  bool comboBoxStateHasChanged;
+
+  IMComboBox() : QComboBox()
+  {   
+    comboBoxStateHasChanged = false;
+    
+    QObject::connect(this,SIGNAL(activated(int)),
+                     this,SLOT(comboBoxChanged(int)));
+                       
+  }
+
+public slots:  
+  void updateState()
+  {
+    comboBoxStateHasChanged = false;
+  }
+
+  void comboBoxChanged(int index)
+  {
+    comboBoxStateHasChanged = true;  
   }  
 };
 

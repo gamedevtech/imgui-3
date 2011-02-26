@@ -902,7 +902,6 @@ bool RadioButton(int id,const char* text,int tag,int* value,const Opts& opts)
   return changed;
 }
 
-
 bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
 {
   IMCheckBox* checkBox = fetchCachedWidget<IMCheckBox>(id);
@@ -933,6 +932,45 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
 
   return checkBox->checkBoxStateHasChanged;
 }
+
+
+bool ComboBox(int id,int count,char** texts,int* index,const Opts& opts)
+{
+  IMComboBox* comboBox = fetchCachedWidget<IMComboBox>(id);
+
+  if (comboBox==0)
+  {
+    comboBox = new IMComboBox();    
+   
+    initializeWidget(id,comboBox,*opts.opts);
+  }
+  
+  if (count!=comboBox->count())
+  {
+    comboBox->clear();
+    for(int i=0;i<count;i++) comboBox->insertItem(i,texts[i]);
+  }
+
+  for(int i=0;i<count;i++) comboBox->setItemText(i,texts[i]);
+  
+  
+  bool changed = false;
+  
+  if (comboBox->comboBoxStateHasChanged && comboBox->currentIndex() != *index)
+  {
+    *index = comboBox->currentIndex();    
+    changed = true;
+  }
+  else
+  {
+    comboBox->setCurrentIndex(*index);
+  }
+        
+  finalizeWidget(comboBox,*opts.opts);  
+  
+  return changed;
+}
+
 
 template<typename T,int orientation> bool AbstractSlider(int id,int min,int max,int* value,const Opts& opts)
 {
