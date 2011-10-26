@@ -1,5 +1,10 @@
 TODO
 ====
+* Dynamicka zmena textu u buttonu,toggle,radiobuttonu a checkboxu
+* Odstranit kontrolu hotness ze slideru a scrollbaru
+  - misto toho kontrolovat stateHasChanged.
+  - zjistit jak to funguje s Opts.tracking(false);
+  - zanechat hotness ve SpinBoxu a LineEditu?
 
 * Kazda funkce by mela kontrolovat ze byla knihovna zinicializovana pomoci guiInit
 * Float SpinBox + vsechny properties pro spinbox ve float verzi
