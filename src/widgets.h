@@ -199,15 +199,17 @@ class IMSlider : public QSlider
   Q_OBJECT
 public:
   bool mouseOver;
-  bool sliderValueHasChanged;
+  //bool sliderValueHasChanged;
 
   IMSlider() : QSlider()
   {
     mouseOver = false;
+    /*
     sliderValueHasChanged = false;
     
     QObject::connect(this,SIGNAL(valueChanged(int)),
                      this,SLOT(sliderValueChanged(int)));
+    */                     
   }
   
   void enterEvent(QEvent* event)
@@ -230,13 +232,14 @@ public:
 public slots:  
   void updateState()
   {
-    sliderValueHasChanged = false;
+  //  sliderValueHasChanged = false;
   }
-
+/*
   void sliderValueChanged(int value)
   {
     sliderValueHasChanged = true;  
   }  
+*/  
 };
 
 class IMScrollBar : public QScrollBar
@@ -244,15 +247,17 @@ class IMScrollBar : public QScrollBar
   Q_OBJECT
 public:
   bool mouseOver;
-  bool sliderValueHasChanged;
+  //bool sliderValueHasChanged;
 
   IMScrollBar() : QScrollBar()
   {
     mouseOver = false;
+    /*
     sliderValueHasChanged = false;
-    
+
     QObject::connect(this,SIGNAL(valueChanged(int)),
                      this,SLOT(sliderValueChanged(int)));
+    */
   }
 
   void enterEvent(QEvent* event)
@@ -275,13 +280,15 @@ public:
 public slots:  
   void updateState()
   {
-    sliderValueHasChanged = false;
+    // sliderValueHasChanged = false;
   }
-
+  
+  /*
   void sliderValueChanged(int value)
   {
     sliderValueHasChanged = true;  
   }
+  */
 };
 
 class IMSpinBox : public QSpinBox

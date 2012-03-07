@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cassert>
+#include <cmath>
 
 #include <QObject>
 #include <QSpinBox>
@@ -101,6 +102,7 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
   ignoreOpts << "stretch";
   ignoreOpts << "gridRow" << "gridColumn" << "gridRowSpan" << "gridColumnSpan";
   ignoreOpts << "marginLeft" << "marginTop" << "marginRight" << "marginBottom";
+  ignoreOpts << "floatSingleStep" << "floatPageStep";
   
   QHashIterator<QString,QVariant> it(opts.options);
 
@@ -261,8 +263,10 @@ Opts& Opts::readOnly(bool readOnly) { opts->set("readOnly",readOnly); return *th
 
 Opts& Opts::tracking(bool tracking) { opts->set("tracking",tracking); return *this; }
 Opts& Opts::singleStep(int step) { opts->set("singleStep",step); return *this; }
-Opts& Opts::singleStep(float step) { opts->set("singleStep",step); return *this; }
 Opts& Opts::pageStep(int step) { opts->set("pageStep",step); return *this; }
+
+Opts& Opts::singleStep(float step) { opts->set("floatSingleStep",step); return *this; }
+Opts& Opts::pageStep(float step) { opts->set("floatPageStep",step); return *this; }
 
 Opts& Opts::tickInterval(int interval) { opts->set("tickInterval",interval); return *this; }
 Opts& Opts::tickPosition(SliderTicks ticks) { opts->set("tickPosition",(QSlider::TickPosition)ticks); return *this; }
@@ -988,10 +992,53 @@ template<typename T,int orientation> bool AbstractSlider(int id,int min,int max,
   slider->setRange(min,max);
   
   if (slider->value()!=*value && slider->isHot()==false) slider->setValue(*value);
+
+  bool changed = false;  
   
-  *value = slider->value();
+  if (slider->value() != *value) { *value = slider->value(); changed = true; }
   
-  return slider->sliderValueHasChanged;    
+  return changed; 
+}
+
+float round(float x)
+{
+  return (x > 0.0f) ? floor(x + 0.5f) : ceil(x - 0.5f);
+}
+
+template<typename T,int orientation> bool AbstractFloatSlider(int id,float min,float max,float* value,const Opts& opts)
+{
+  T* slider = fetchCachedWidget<T>(id);
+
+  if (slider==0)
+  {
+    slider = new T();
+    slider->setOrientation((Qt::Orientation)orientation);
+    initializeWidget(id,slider,*opts.opts);
+  }
+  
+  finalizeWidget(slider,*opts.opts);  
+        
+  // TODO (min<=max)
+  // TODO (max-min) != 0 !
+  slider->setRange(0,10000);
+    
+  float defaultPageStep = (max-min)/10.0f;
+  
+  // TODO pageStep > 0
+  int intPageStep = (int)ceil((opts.opts->get<float>("floatPageStep",defaultPageStep) / (max-min))*10000.0f);
+  // TODO intSingleStep
+  
+  slider->setPageStep(intPageStep);
+
+  int intValue = (int)round( (((*value)-min)/(max-min))*10000.0f );
+  
+  if (slider->value()!=intValue && slider->isHot()==false) slider->setValue(intValue);
+
+  bool changed = false;
+  
+  if (slider->value() != intValue) { float lastValue=*value; *value = (((float)slider->value())/10000.0f)*(max-min)+min; changed = (lastValue != *value); }
+  
+  return changed; 
 }
 
 bool HSlider(int id,int min,int max,int* value,const Opts& opts)
@@ -1004,6 +1051,16 @@ bool VSlider(int id,int min,int max,int* value,const Opts& opts)
   return AbstractSlider<IMSlider,Qt::Vertical>(id,min,max,value,opts);
 }
 
+bool HSlider(int id,float min,float max,float* value,const Opts& opts)
+{
+  return AbstractFloatSlider<IMSlider,Qt::Horizontal>(id,min,max,value,opts);
+}
+
+bool VSlider(int id,float min,float max,float* value,const Opts& opts)
+{
+  return AbstractFloatSlider<IMSlider,Qt::Vertical>(id,min,max,value,opts);
+}
+
 bool HScrollBar(int id,int min,int max,int* value,const Opts& opts)
 {
   return AbstractSlider<IMScrollBar,Qt::Horizontal>(id,min,max,value,opts);
@@ -1012,6 +1069,16 @@ bool HScrollBar(int id,int min,int max,int* value,const Opts& opts)
 bool VScrollBar(int id,int min,int max,int* value,const Opts& opts)
 {
   return AbstractSlider<IMScrollBar,Qt::Vertical>(id,min,max,value,opts);
+}
+
+bool HScrollBar(int id,float min,float max,float* value,const Opts& opts)
+{
+  return AbstractFloatSlider<IMScrollBar,Qt::Horizontal>(id,min,max,value,opts);
+}
+
+bool VScrollBar(int id,float min,float max,float* value,const Opts& opts)
+{
+  return AbstractFloatSlider<IMScrollBar,Qt::Vertical>(id,min,max,value,opts);
 }
 
 bool SpinBox(int id,int min,int max,int* value,const Opts& opts)

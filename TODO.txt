@@ -1,5 +1,18 @@
 TODO
 ====
+* AbstractSlider / AbstractFloatSlider
+  - singleStep opt (default hodnota?)
+  - kontrola min/max range
+  - kontrola pageStep/singleStep > 0
+  - overit korektni chovani pri Opts().tracking(true)
+  - invertedAppearance opt?
+  - kontrolovat jestli se u int slideru nensatavuje pageStep(float)/singleStep(float)
+  - konverze pageStep(int)/singleStep(int) na float u float slideru?
+  - kontrolovat jestli se u float slideru zaroven nenastavuje pageStep(int) a pageStep(float) (kolize)
+  - click and jump chovani
+  
+* predelat widgety tak aby vraceli changed=true pouze v pripade ze se manipulovana hodnota zmeni UVNITR VOLANI funkce
+  
 * Dynamicka zmena textu u buttonu,toggle,radiobuttonu a checkboxu
 * Odstranit kontrolu hotness ze slideru a scrollbaru
   - misto toho kontrolovat stateHasChanged.

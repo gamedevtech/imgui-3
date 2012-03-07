@@ -308,6 +308,7 @@ GUI_API Opts& singleStep(float step);
 
 // Slider, ScrollBar
 GUI_API Opts& pageStep(int step);
+GUI_API Opts& pageStep(float step);
 GUI_API Opts& tracking(bool tracking);
 
 // Slider
@@ -362,12 +363,16 @@ GUI_API bool LineEdit(int id,int* value,const Opts& opts = Opts());
 GUI_API bool LineEdit(int id,float* value,const Opts& opts = Opts());
 
 GUI_API bool HSlider(int id,int min,int max,int* value,const Opts& opts = Opts());
+GUI_API bool HSlider(int id,float min,float max,float* value,const Opts& opts = Opts());
 
 GUI_API bool VSlider(int id,int min,int max,int* value,const Opts& opts = Opts());
+GUI_API bool VSlider(int id,float min,float max,float* value,const Opts& opts = Opts());
 
 GUI_API bool HScrollBar(int id,int min,int max,int* value,const Opts& opts = Opts());
+GUI_API bool HScrollBar(int id,float min,float max,float* value,const Opts& opts = Opts());
 
 GUI_API bool VScrollBar(int id,int min,int max,int* value,const Opts& opts = Opts());
+GUI_API bool VScrollBar(int id,float min,float max,float* value,const Opts& opts = Opts());
 
 GUI_API void Spacer(int id,const Opts& opts = Opts());
 
