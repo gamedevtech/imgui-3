@@ -325,6 +325,16 @@ GUI_API Opts& frameShadow(FrameShadow shadow);
 GUI_API Opts& frameLineWidth(int width);
 GUI_API Opts& frameMidLineWidth(int width);
 
+// Window
+GUI_API Opts& showTitleBar(bool showTitleBar);
+GUI_API Opts& showMinimizeButton(bool showMinimizeButton);
+GUI_API Opts& showMaximizeButton(bool showMaximizeButton);
+GUI_API Opts& showMinMaxButtons(bool showMinimizeButton,bool showMaximizeButton);
+GUI_API Opts& showCloseButton(bool showCloseButton);
+GUI_API Opts& showSystemMenu(bool showSystemMenu);
+GUI_API Opts& showFrame(bool showFrame);
+GUI_API Opts& stayOnTop(bool stayOnTop);
+
 // Layout
 GUI_API Opts& sizeConstraint(SizeConstraint constraint);
 GUI_API Opts& spacing(int spacing);

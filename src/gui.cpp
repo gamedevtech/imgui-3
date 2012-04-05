@@ -103,7 +103,8 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
   ignoreOpts << "gridRow" << "gridColumn" << "gridRowSpan" << "gridColumnSpan";
   ignoreOpts << "marginLeft" << "marginTop" << "marginRight" << "marginBottom";
   ignoreOpts << "floatSingleStep" << "floatPageStep";
-  
+  ignoreOpts << "showFrame" << "showTitleBar" << "showMinimizeButton" << "showMaximizeButton" << "showCloseButton" << "showSystemMenu" << "stayOnTop";
+
   QHashIterator<QString,QVariant> it(opts.options);
 
   while (it.hasNext()) 
@@ -278,6 +279,15 @@ Opts& Opts::frameShape(FrameShape shape) { opts->set("frameShape",(QFrame::Shape
 Opts& Opts::frameShadow(FrameShadow shadow) { opts->set("frameShadow",(QFrame::Shadow)shadow); return *this; }
 Opts& Opts::frameLineWidth(int width) { opts->set("lineWidth",width); return *this; }
 Opts& Opts::frameMidLineWidth(int width) { opts->set("midLineWidth",width); return *this; }
+
+Opts& Opts::showFrame(bool showFrame) { opts->set("showFrame",showFrame); return *this; }
+Opts& Opts::showTitleBar(bool showTitleBar) { opts->set("showTitleBar",showTitleBar); return *this; }
+Opts& Opts::showMinimizeButton(bool showMinimizeButton) { opts->set("showMinimizeButton",showMinimizeButton); return *this; }
+Opts& Opts::showMaximizeButton(bool showMaximizeButton) { opts->set("showMaximizeButton",showMaximizeButton); return *this; }
+Opts& Opts::showMinMaxButtons(bool showMinButton,bool showMaxButton) { showMinimizeButton(showMinButton); showMaximizeButton(showMaxButton); return *this; }
+Opts& Opts::showCloseButton(bool showCloseButton) { opts->set("showCloseButton",showCloseButton); return *this; }
+Opts& Opts::showSystemMenu(bool showSystemMenu) { opts->set("showSystemMenu",showSystemMenu); return *this; }
+Opts& Opts::stayOnTop(bool stayOnTop) { opts->set("stayOnTop",stayOnTop); return *this; }
 
 Opts& Opts::sizeConstraint(SizeConstraint constraint)
 { 
@@ -1198,6 +1208,31 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
 
     initializeWidget(id,window,*opts.opts);
   }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+  
+  Qt::WindowFlags windowFlags = Qt::Window | Qt::CustomizeWindowHint;
+    
+  if (opts.opts->get<bool>("showTitleBar",true))
+  {
+    windowFlags |= Qt::WindowTitleHint;
+    
+    if (opts.opts->get<bool>("showMinimizeButton",true)) windowFlags |= Qt::WindowMinimizeButtonHint | Qt::WindowSystemMenuHint;
+    if (opts.opts->get<bool>("showMaximizeButton",true)) windowFlags |= Qt::WindowMaximizeButtonHint | Qt::WindowSystemMenuHint;
+    if (opts.opts->get<bool>("showCloseButton",true))    windowFlags |= Qt::WindowCloseButtonHint    | Qt::WindowSystemMenuHint;
+    if (opts.opts->get<bool>("showSystemMenu",true))     windowFlags |= Qt::WindowSystemMenuHint;
+  }
+
+  if (opts.opts->get<bool>("showFrame",true)==false && !(windowFlags & Qt::WindowSystemMenuHint))
+  {
+    windowFlags |= Qt::FramelessWindowHint;
+  }
+  
+  if (opts.opts->get<bool>("stayOnTop",false)) windowFlags |= Qt::WindowStaysOnTopHint;
+    
+  window->setWindowFlags(windowFlags);
+
+  ///////////////////////////////////////////////////////////////////////////////////
   
   window->setWindowTitle(title);
   window->show();
