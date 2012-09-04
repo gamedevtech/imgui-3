@@ -1407,16 +1407,12 @@ bool mouseUp(MouseButton button)
 
 int mouseX()
 {
-  int x = 0;
-  QMetaObject::invokeMethod(widgetStack.top(),"mouseX",Qt::DirectConnection,Q_RETURN_ARG(int,x));  
-  return x;
+  return widgetStack.top()->mapFromGlobal(QCursor::pos()).x();
 }
 
 int mouseY()
 {
-  int y = 0;
-  QMetaObject::invokeMethod(widgetStack.top(),"mouseY",Qt::DirectConnection,Q_RETURN_ARG(int,y));  
-  return y;
+  return widgetStack.top()->mapFromGlobal(QCursor::pos()).y();
 }
 
 int mouseWheelDelta()

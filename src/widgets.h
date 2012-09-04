@@ -482,7 +482,6 @@ public:
   };
   
   ButtonState mouseButtonStates[3];
-  QPoint mousePosition;
   int wheelDelta;  
     
   IMPixmap()
@@ -494,9 +493,7 @@ public:
     button2id[Qt::MidButton] = 2;
     
     for(int i=0;i<3;i++) mouseButtonStates[i] = Released;
-    
-    mousePosition = QPoint(0,0);
-    
+        
     wheelDelta = 0;
     
     setMouseTracking(true);     
@@ -510,21 +507,14 @@ public:
   void mousePressEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Down;
-    mousePosition = event->pos();
     setFocus(Qt::MouseFocusReason);
   }
 
   void mouseReleaseEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Up;
-    mousePosition = event->pos();
   }
-  
-  void mouseMoveEvent(QMouseEvent* event)
-  {
-    mousePosition = event->pos();
-  } 
-  
+    
   void wheelEvent(QWheelEvent* event)
   {
     wheelDelta = event->delta();
@@ -550,16 +540,6 @@ public slots:
   {
     return mouseButtonStates[button2id[button]]==Up;
   }
-
-  int mouseX()
-  {
-    return mousePosition.x();
-  }  
-
-  int mouseY()
-  {
-    return mousePosition.y();
-  }  
   
   int mouseWheelDelta()
   {
@@ -596,7 +576,6 @@ public:
   };
     
   ButtonState mouseButtonStates[3];  
-  QPoint mousePosition;
   int wheelDelta;  
       
   GLContextPrivate()
@@ -617,8 +596,6 @@ public:
     
     for(int i=0;i<3;i++) mouseButtonStates[i] = Released;
     
-    mousePosition = QPoint(0,0);
-
     wheelDelta = 0;
     
     glWidget->setMouseTracking(true);
@@ -654,21 +631,14 @@ public:
   void mousePressEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Down;
-    mousePosition = event->pos();
     setFocus(Qt::MouseFocusReason);
   }
 
   void mouseReleaseEvent(QMouseEvent* event) 
   {
     mouseButtonStates[button2id[event->button()]] = Up;
-    mousePosition = event->pos();
   }
-  
-  void mouseMoveEvent(QMouseEvent* event)
-  {
-    mousePosition = event->pos();
-  } 
-  
+    
   void wheelEvent(QWheelEvent* event)
   {
     wheelDelta = event->delta();
@@ -694,16 +664,6 @@ public slots:
   {
     return mouseButtonStates[button2id[button]]==Up;
   }
-
-  int mouseX()
-  {
-    return mousePosition.x();
-  }  
-
-  int mouseY()
-  {
-    return mousePosition.y();
-  }  
   
   int mouseWheelDelta()
   {
