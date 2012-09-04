@@ -13,7 +13,6 @@ TODO
   
 * predelat widgety tak aby vraceli changed=true pouze v pripade ze se manipulovana hodnota zmeni UVNITR VOLANI funkce
   
-* Dynamicka zmena textu u buttonu,toggle,radiobuttonu a checkboxu
 * Odstranit kontrolu hotness ze slideru a scrollbaru
   - misto toho kontrolovat stateHasChanged.
   - zjistit jak to funguje s Opts.tracking(false);
@@ -21,19 +20,13 @@ TODO
 
 * Kazda funkce by mela kontrolovat ze byla knihovna zinicializovana pomoci guiInit
 * Float SpinBox + vsechny properties pro spinbox ve float verzi
-* Float Slider + vsechny properties pro slider ve float verzi
 * Pass-through api ( value = HSlider(ID,0,10,value,[Opts]); ) pro widgety ktery manipulujou hodnotu
-* Gobalni keyDown/keyPress/keyUp ?
-* Kdyz widget ztrati focus, nedostane keyReleasedEvent a klavesa zustane ve stavu keyPressed
-  - zakazat zmenu kdyz je nejaka klavasa ve stavu keyPressed?
+* Kdyz aplikace ztrati focus, nedostane keyReleasedEvent a klavesa zustane ve stavu keyPressed
   - grabovat klavesnici?
-  - nastavit stav keyUp vsem klavesam ktery byly ve stavu pressed kdyz widget ztrati focus?
-  - dostane novej widget keyPressedEvent nebo jen keyReleasedEvent?
 * Kdyz ma slider focus a mouseWheel eventy dostava jeste jinej widget (napr GLWidget),
   kterej na zaklade nich modifikuje stejnou hodnotu jako slider tak to blbne
 * Scroll Area
-* Radio (+ Radio Group / Switch?)
-* ComboBox
+* Radio Group? / Switch?
 * TabBar
 * Menu
 * Renderovani do bitmapy
