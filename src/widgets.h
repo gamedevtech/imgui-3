@@ -21,6 +21,61 @@
 
 #include <cstdio>
   
+class IMEventFilter : public QObject
+{
+  Q_OBJECT
+public:
+  QSet<Qt::Key> keyDownSet;
+  QSet<Qt::Key> keyPressedSet;
+  QSet<Qt::Key> keyUpSet;
+
+  bool eventFilter(QObject *object, QEvent *event)
+  {
+    if (event->type() == QEvent::KeyPress)
+    {
+      if (((QKeyEvent*)event)->isAutoRepeat()==false)
+      {
+        keyDownSet.insert((Qt::Key)((QKeyEvent*)event)->key());  
+      }        
+    }
+
+    if (event->type() == QEvent::KeyRelease)
+    {
+      if (((QKeyEvent*)event)->isAutoRepeat()==false)
+      {
+        keyPressedSet.remove((Qt::Key)((QKeyEvent*)event)->key());
+        keyUpSet.insert((Qt::Key)((QKeyEvent*)event)->key());
+      }
+    }
+
+    return false;
+  }
+
+  void updateState()
+  {        
+    foreach(Qt::Key key,keyDownSet) keyPressedSet.insert(key);
+    
+    keyDownSet.clear();
+    keyUpSet.clear();
+  }
+
+  bool keyDown(Qt::Key key)
+  {
+    return keyDownSet.contains(key);
+  }
+  
+  bool keyPressed(Qt::Key key)
+  {
+    return keyPressedSet.contains(key);
+  }
+
+  bool keyUp(Qt::Key key)
+  {
+    return keyUpSet.contains(key);
+  }
+};
+
+
 class IMWindow : public QWidget
 {
   Q_OBJECT
@@ -430,10 +485,6 @@ public:
   QPoint mousePosition;
   int wheelDelta;  
     
-  QSet<Qt::Key> keyDownSet;
-  QSet<Qt::Key> keyPressedSet;
-  QSet<Qt::Key> keyUpSet;
-
   IMPixmap()
   {  
     widgetWasResized = false;
@@ -478,23 +529,6 @@ public:
   {
     wheelDelta = event->delta();
   }
-
-  void keyPressEvent(QKeyEvent* event)
-  {
-    if (event->isAutoRepeat()==false)
-    {    
-      keyDownSet.insert((Qt::Key)event->key());  
-    }
-  }
-
-  void keyReleaseEvent(QKeyEvent* event)
-  {
-    if (event->isAutoRepeat()==false)
-    {
-      keyPressedSet.remove((Qt::Key)event->key());  
-      keyUpSet.insert((Qt::Key)event->key());  
-    }
-  }
   
 public slots:
   bool widgetResized()
@@ -532,21 +566,6 @@ public slots:
     return wheelDelta;
   }
   
-  bool keyDown(Qt::Key key)
-  {
-    return keyDownSet.contains(key);
-  }
-  
-  bool keyPressed(Qt::Key key)
-  {
-    return keyPressedSet.contains(key);
-  }
-
-  bool keyUp(Qt::Key key)
-  {
-    return keyUpSet.contains(key);
-  }
-
   void updateState()
   {
     widgetWasResized = false;
@@ -558,11 +577,6 @@ public slots:
     }
 
     wheelDelta = 0;
-        
-    foreach(Qt::Key key,keyDownSet) keyPressedSet.insert(key);
-    
-    keyDownSet.clear();
-    keyUpSet.clear();
   }   
 };
 
@@ -584,11 +598,7 @@ public:
   ButtonState mouseButtonStates[3];  
   QPoint mousePosition;
   int wheelDelta;  
-  
-  QSet<Qt::Key> keyDownSet;
-  QSet<Qt::Key> keyPressedSet;
-  QSet<Qt::Key> keyUpSet;
-    
+      
   GLContextPrivate()
   {
     QHBoxLayout* layout = new QHBoxLayout(this);    
@@ -663,23 +673,6 @@ public:
   {
     wheelDelta = event->delta();
   }
-
-  void keyPressEvent(QKeyEvent* event)
-  {
-    if (event->isAutoRepeat()==false)
-    {    
-      keyDownSet.insert((Qt::Key)event->key());  
-    }
-  }
-
-  void keyReleaseEvent(QKeyEvent* event)
-  {
-    if (event->isAutoRepeat()==false)
-    {
-      keyPressedSet.remove((Qt::Key)event->key());  
-      keyUpSet.insert((Qt::Key)event->key());  
-    }
-  }
   
 public slots:
   bool widgetResized()
@@ -717,21 +710,6 @@ public slots:
     return wheelDelta;
   }
   
-  bool keyDown(Qt::Key key)
-  {
-    return keyDownSet.contains(key);
-  }
-  
-  bool keyPressed(Qt::Key key)
-  {
-    return keyPressedSet.contains(key);
-  }
-
-  bool keyUp(Qt::Key key)
-  {
-    return keyUpSet.contains(key);
-  }
-
   void updateState()
   {
     widgetWasResized = false;
@@ -743,11 +721,6 @@ public slots:
     }
 
     wheelDelta = 0;
-        
-    foreach(Qt::Key key,keyDownSet) keyPressedSet.insert(key);
-    
-    keyDownSet.clear();
-    keyUpSet.clear();
   }
 };
 

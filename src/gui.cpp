@@ -320,6 +320,7 @@ struct LayoutPosition
 };
 
 QApplication* app;
+IMEventFilter* eventFilter;
 
 QHash<int,QWidget*> widgets;
 QHash<int,QLayout*> layouts;
@@ -1427,28 +1428,24 @@ int mouseWheelDelta()
 
 bool keyDown(Key key)
 {
-  bool down = false;
-  QMetaObject::invokeMethod(widgetStack.top(),"keyDown",Qt::DirectConnection,Q_RETURN_ARG(bool,down),Q_ARG(Qt::Key,((Qt::Key)key)));  
-  return down;    
+  return eventFilter->keyDown((Qt::Key)key);
 }
 
 bool keyPressed(Key key)
 {
-  bool pressed = false;
-  QMetaObject::invokeMethod(widgetStack.top(),"keyPressed",Qt::DirectConnection,Q_RETURN_ARG(bool,pressed),Q_ARG(Qt::Key,((Qt::Key)key)));  
-  return pressed;    
+  return eventFilter->keyPressed((Qt::Key)key);
 }
 
 bool keyUp(Key key)
 {
-  bool up = false;
-  QMetaObject::invokeMethod(widgetStack.top(),"keyUp",Qt::DirectConnection,Q_RETURN_ARG(bool,up),Q_ARG(Qt::Key,((Qt::Key)key)));  
-  return up;    
+  return eventFilter->keyUp((Qt::Key)key);    
 }
 
 void guiInit(int& argc,char** argv)
 {
   app = new QApplication(argc,argv);
+  eventFilter = new IMEventFilter();
+  app->installEventFilter(eventFilter);
 }
 
 void guiInit()
@@ -1463,6 +1460,8 @@ void guiUpdate()
   assert(widgetStack.empty()==true);
   assert(layoutStack.empty()==true);
   assert(orderStack.empty()==true);
+  
+  eventFilter->updateState();
   
   QVector<int> remlist;
 
