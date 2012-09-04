@@ -684,4 +684,95 @@ public slots:
   }
 };
 
+class IMFrame : public QFrame
+{
+  Q_OBJECT
+public:    
+  bool widgetWasResized;
+  
+  int button2id[5];
+
+  enum ButtonState
+  {
+    Released,Down,Pressed,Up
+  };
+  
+  ButtonState mouseButtonStates[3];
+  int wheelDelta;  
+    
+  IMFrame()
+  {  
+    widgetWasResized = false;
+    
+    button2id[Qt::LeftButton] = 0;
+    button2id[Qt::RightButton] = 1;
+    button2id[Qt::MidButton] = 2;
+    
+    for(int i=0;i<3;i++) mouseButtonStates[i] = Released;    
+    
+    wheelDelta = 0;
+    
+    setMouseTracking(true);     
+  }
+  
+  void resizeEvent(QResizeEvent* event)
+  {
+    widgetWasResized = true;
+  }  
+
+  void mousePressEvent(QMouseEvent* event) 
+  {
+    mouseButtonStates[button2id[event->button()]] = Down;
+    setFocus(Qt::MouseFocusReason);
+  }
+
+  void mouseReleaseEvent(QMouseEvent* event) 
+  {
+    mouseButtonStates[button2id[event->button()]] = Up;
+  }
+    
+  void wheelEvent(QWheelEvent* event)
+  {
+    wheelDelta = event->delta();
+  }
+  
+public slots:
+  bool widgetResized()
+  {
+    return widgetWasResized;
+  }
+
+  bool mouseDown(int button)
+  {
+    return mouseButtonStates[button2id[button]]==Down;
+  }
+
+  bool mousePressed(int button)
+  {
+    return mouseButtonStates[button2id[button]]==Pressed;
+  }
+
+  bool mouseUp(int button)
+  {
+    return mouseButtonStates[button2id[button]]==Up;
+  }
+  
+  int mouseWheelDelta()
+  {
+    return wheelDelta;
+  }
+
+  void updateState()
+  {
+    widgetWasResized = false;
+        
+    for(int i=0;i<3;i++)
+    {
+      if (mouseButtonStates[i] == Down) mouseButtonStates[i] = Pressed;
+      else if (mouseButtonStates[i] == Up) mouseButtonStates[i] = Released;
+    }
+
+    wheelDelta = 0;        
+  }   
+};
 #endif

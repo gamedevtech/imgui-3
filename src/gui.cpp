@@ -1274,11 +1274,11 @@ bool windowCloseRequest()
 
 void FrameBegin(int id,const Opts& opts)
 {
-  QFrame* frame = fetchCachedWidget<QFrame>(id);
+  IMFrame* frame = fetchCachedWidget<IMFrame>(id);
 
   if (frame==0)
   {
-    frame = new QFrame();
+    frame = new IMFrame();
     
     initializeWidget(id,frame,*opts.opts);
   }
