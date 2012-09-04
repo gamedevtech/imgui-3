@@ -347,7 +347,8 @@ OptsPrivate* opts;
 
 GUI_API void guiInit(int& argc,char** argv);
 GUI_API void guiInit();
-GUI_API void guiUpdate();
+GUI_API void guiUpdate(bool wait=false);
+GUI_API void guiUpdateAndWait();
 GUI_API void guiCleanup();
 
 GUI_API void Label(int id,const char* text,const Opts& opts = Opts());

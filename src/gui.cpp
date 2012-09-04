@@ -1461,7 +1461,7 @@ void guiInit()
   guiInit(argc,&argv);
 }
 
-void guiUpdate()
+void guiUpdate(bool wait)
 { 
   assert(widgetStack.empty()==true);
   assert(layoutStack.empty()==true);
@@ -1519,7 +1519,17 @@ void guiUpdate()
   } 
   
   fresh.clear();    
-  app->processEvents();
+
+  app->sendPostedEvents();
+  app->processEvents(QEventLoop::ExcludeUserInputEvents);
+  app->sendPostedEvents();
+  
+  if (wait) app->processEvents(QEventLoop::WaitForMoreEvents); else app->processEvents();
+}
+
+void guiUpdateAndWait()
+{ 
+  guiUpdate(true);  
 }
 
 void guiCleanup()
