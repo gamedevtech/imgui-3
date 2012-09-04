@@ -1352,7 +1352,16 @@ void PixmapEnd()
 char* FileOpenDialog(const char* caption,const char* dir,const char* filter)
 {
   static QByteArray fileName;  
-  fileName = QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit();
+  
+  //XXX: fileName = QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit();    
+  //this is workaround for a situation when one compiles imgui with msvc2010+
+  //and links it with Qt that was built with older msvc i.e., msvc2008.
+  //The problem is that msvc2010 expects implicitly generated operator= with C++0x r-value reference,
+  //which is not present in Qt lib that was built with older version of msvc.
+  fileName.clear();
+  fileName.insert(0,QFileDialog::getOpenFileName(0,caption,dir,filter).toLocal8Bit());
+  ///////////////////////////////
+
   if (fileName.size()==0) return 0;
   fileName.append('\0');  
   return fileName.data();
@@ -1361,7 +1370,16 @@ char* FileOpenDialog(const char* caption,const char* dir,const char* filter)
 char* FileSaveDialog(const char* caption,const char* dir,const char* filter)
 {
   static QByteArray fileName;
-  fileName = QFileDialog::getSaveFileName(0,caption,dir,filter).toLocal8Bit();  
+
+  //XXX: fileName = QFileDialog::getSaveFileName(0,caption,dir,filter).toLocal8Bit();    
+  //this is workaround for a situation when one compiles imgui with msvc2010+
+  //and links it with Qt that was built with older msvc i.e., msvc2008.
+  //The problem is that msvc2010 expects implicitly generated operator= with C++0x r-value reference,
+  //which is not present in Qt lib that was built with older version of msvc.
+  fileName.clear();
+  fileName.insert(0,QFileDialog::getSaveFileName(0,caption,dir,filter).toLocal8Bit());
+  ///////////////////////////////
+
   if (fileName.size()==0) return 0;
   fileName.append('\0');  
   return fileName.data();
