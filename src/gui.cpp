@@ -839,6 +839,8 @@ bool Button(int id,const char* iconFileName,const char* text,const Opts& opts)
     button->setIconSize(icon.availableSizes()[0]);    
   }
 
+  button->setText(text);
+
   finalizeWidget(button,*opts.opts);  
 
   return button->buttonWasClicked;
@@ -868,6 +870,8 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
   }
   */ 
   
+  toggleButton->setText(text);
+
   if (toggleButton->isChecked()!=*state && toggleButton->isHot()==false)
   {
     toggleButton->setChecked(*state);
@@ -936,6 +940,8 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
   }
   */ 
   
+  checkBox->setText(text);
+
   if (checkBox->isChecked()!=*state && checkBox->isHot()==false)
   {
     checkBox->setChecked(*state);
@@ -1300,6 +1306,8 @@ void GroupBoxBegin(int id,const char* text,const Opts& opts)
     
     initializeWidget(id,groupBox,*opts.opts);
   }
+  
+  groupBox->setTitle(text);
   
   finalizeWidget(groupBox,*opts.opts);
 
