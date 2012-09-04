@@ -427,6 +427,8 @@ GUI_API int mouseY();
 
 GUI_API int mouseWheelDelta();
 
+GUI_API bool mouseIsOver();
+
 GUI_API bool keyDown(Key key);
 GUI_API bool keyPressed(Key key);
 GUI_API bool keyUp(Key key);

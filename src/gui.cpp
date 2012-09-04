@@ -1426,6 +1426,11 @@ int mouseWheelDelta()
   return d;
 }
 
+bool mouseIsOver()
+{
+  return widgetStack.top()->underMouse();
+}
+
 bool keyDown(Key key)
 {
   return eventFilter->keyDown((Qt::Key)key);
