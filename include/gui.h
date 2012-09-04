@@ -431,6 +431,8 @@ GUI_API bool keyDown(Key key);
 GUI_API bool keyPressed(Key key);
 GUI_API bool keyUp(Key key);
 
+GUI_API bool widgetHasFocus();
+
 class GLContextPrivate;
 
 class GLContext

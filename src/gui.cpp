@@ -1441,6 +1441,11 @@ bool keyUp(Key key)
   return eventFilter->keyUp((Qt::Key)key);    
 }
 
+bool widgetHasFocus()
+{
+  return widgetStack.top()->hasFocus();
+}
+
 void guiInit(int& argc,char** argv)
 {
   app = new QApplication(argc,argv);
