@@ -361,6 +361,7 @@ GUI_API bool Button(int id,const char* iconFileName,const char* text,const Opts&
 
 GUI_API bool RadioButton(int id,const char* text,int tag,int* value,const Opts& opts = Opts());
 
+GUI_API bool ToggleButton(int id,const char* text,bool* state,const Opts& opts = Opts());
 GUI_API bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,const Opts& opts = Opts());
 
 GUI_API bool CheckBox(int id,const char* text,bool* state,const Opts& opts = Opts());
@@ -387,6 +388,7 @@ GUI_API bool VScrollBar(int id,float min,float max,float* value,const Opts& opts
 
 GUI_API void Spacer(int id,const Opts& opts = Opts());
 
+GUI_API void WindowBegin(int id,const char* title,const Opts& opts = Opts());
 GUI_API void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& opts = Opts());
 GUI_API void WindowEnd();
 

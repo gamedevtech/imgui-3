@@ -861,14 +861,13 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
    
     initializeWidget(id,toggleButton,*opts.opts);
   }
-  /*
+  
   if (QString(iconFileName).isEmpty()==false)
   {
     QIcon icon(iconFileName);
     toggleButton->setIcon(icon);
     toggleButton->setIconSize(icon.availableSizes()[0]);    
   }
-  */ 
   
   toggleButton->setText(text);
 
@@ -882,6 +881,11 @@ bool ToggleButton(int id,const char* iconFileName,const char* text,bool* state,c
   finalizeWidget(toggleButton,*opts.opts);  
 
   return toggleButton->buttonWasToggled;
+}
+
+bool ToggleButton(int id,const char* text,bool* state,const Opts& opts)
+{
+  return ToggleButton(id,"",text,state,opts);
 }
 
 bool RadioButton(int id,const char* text,int tag,int* value,const Opts& opts)
@@ -931,14 +935,6 @@ bool CheckBox(int id,const char* text,bool* state,const Opts& opts)
    
     initializeWidget(id,checkBox,*opts.opts);
   }
-  /*
-  if (QString(iconFileName).isEmpty()==false)
-  {
-    QIcon icon(iconFileName);
-    checkBox->setIcon(icon);
-    checkBox->setIconSize(icon.availableSizes()[0]);    
-  }
-  */ 
   
   checkBox->setText(text);
 
@@ -1253,6 +1249,11 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
   widgetStack.push(window);    
 }
 
+void WindowBegin(int id,const char* title,const Opts& opts)
+{
+  WindowBegin(id,"",title,opts);
+}
+
 void WindowEnd()
 {
   //widgetStack.top()->show();
@@ -1308,7 +1309,7 @@ void GroupBoxBegin(int id,const char* text,const Opts& opts)
   }
   
   groupBox->setTitle(text);
-  
+
   finalizeWidget(groupBox,*opts.opts);
 
   layoutStack.push(0);  
