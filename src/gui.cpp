@@ -334,6 +334,8 @@ QSet<QObject*> fresh;
 QHash<QObject*,QLayout*> parentLayout;
 QHash<QObject*,LayoutPosition> layoutPosition;
 
+QVector<QWidget*> showlist;
+
 bool needsReinsert(QObject* object,QLayout* layout,const OptsPrivate& opts)
 {
   assert(object->inherits("QWidget") || object->inherits("QLayout"));
@@ -1238,7 +1240,10 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
   ///////////////////////////////////////////////////////////////////////////////////
   
   window->setWindowTitle(title);
-  window->show();
+
+  //window->show();
+  // XXX: HACK!
+  showlist.push_back(window);
   
   if (QString(iconFileName).isEmpty()==false) window->setWindowIcon(QIcon(iconFileName));
   
@@ -1546,6 +1551,13 @@ void guiUpdate(bool wait)
   } 
   
   fresh.clear();    
+
+  /// XXX: HACK  
+  for(int i=0;i<showlist.size();i++)
+  {
+    showlist[i]->show();
+  }
+  showlist.clear(); 
 
   app->sendPostedEvents();
   app->processEvents(QEventLoop::ExcludeUserInputEvents);
