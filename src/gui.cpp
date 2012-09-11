@@ -1620,8 +1620,8 @@ void guiCleanup()
   widgets.clear();
   layouts.clear();
   
-  showlsit.clear();
-  
+  showlist.clear();
+
   delete app;
 };
 
