@@ -546,9 +546,11 @@ void deleteWidget(QWidget* widget)
   for (int i = 0; i < children.size(); ++i)
   {
     //printf("%s->children(%d)=%s\n",qPrintable(widget->objectName()),i,qPrintable(children.at(i)->objectName()));
-    if (QWidget* widget = qobject_cast<QWidget*>(children.at(i))) widget->clearFocus();
-
-    children.at(i)->setParent(0); 
+    if (QWidget* widget = qobject_cast<QWidget*>(children.at(i)))
+    {
+      widget->clearFocus();
+      widget->setParent(0);
+    }
   }
    
   ///////////////////////////////////
