@@ -299,6 +299,8 @@ GUI_API Opts& fixedWidth(int width);
 GUI_API Opts& fixedHeight(int height);
 GUI_API Opts& fixedSize(int width,int height);
 
+GUI_API Opts& initialGeometry(int x,int y,int width,int height);
+
 GUI_API Opts& margins(int left,int top,int right,int bottom);
  
 GUI_API Opts& enabled(bool enabled);

@@ -104,6 +104,7 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
   ignoreOpts << "marginLeft" << "marginTop" << "marginRight" << "marginBottom";
   ignoreOpts << "floatSingleStep" << "floatPageStep";
   ignoreOpts << "showFrame" << "showTitleBar" << "showMinimizeButton" << "showMaximizeButton" << "showCloseButton" << "showSystemMenu" << "stayOnTop";
+  ignoreOpts << "initialGeometryX" << "initialGeometryY" << "initialGeometryWidth" << "initialGeometryHeight";
 
   QHashIterator<QString,QVariant> it(opts.options);
 
@@ -244,6 +245,15 @@ Opts& Opts::maximumSize(int width,int height) { maximumWidth(width); maximumHeig
 Opts& Opts::fixedWidth(int width) { minimumWidth(width); maximumWidth(width); return *this; }
 Opts& Opts::fixedHeight(int height) { minimumHeight(height); maximumHeight(height); return *this; }
 Opts& Opts::fixedSize(int width,int height) { fixedWidth(width); fixedHeight(height); return *this; }
+
+Opts& Opts::initialGeometry(int x,int y,int width,int height)
+{
+  opts->set("initialGeometryX",x); 
+  opts->set("initialGeometryY",y); 
+  opts->set("initialGeometryWidth",width); 
+  opts->set("initialGeometryHeight",height); 
+  return *this; 
+}
 
 Opts& Opts::margins(int left,int top,int right,int bottom)
 { 
@@ -1240,7 +1250,18 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
   window->setWindowFlags(windowFlags);
 
   ///////////////////////////////////////////////////////////////////////////////////
-  
+
+  // XXX:
+  if (!window->isVisible() && opts.opts->isSet("initialGeometryX"))
+  {
+    window->setGeometry(opts.opts->get<int>("initialGeometryX"),
+                        opts.opts->get<int>("initialGeometryY"),
+                        opts.opts->get<int>("initialGeometryWidth"),
+                        opts.opts->get<int>("initialGeometryHeight"));
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+    
   window->setWindowTitle(title);
 
   //window->show();
