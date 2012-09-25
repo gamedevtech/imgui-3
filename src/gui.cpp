@@ -1681,8 +1681,23 @@ GLContext::GLContext()
 
 GLContext::~GLContext()
 {
-  delete glContextPrivate;  
-}  
+  QWidget* widget = glContextPrivate;
+
+  if (widget->property("id").isValid())
+  {
+      if (parentLayout[widget]!=(QLayout*)-1) parentLayout[widget]->removeWidget(widget);
+            
+      parentLayout.remove(widget);
+      if (layoutPosition.contains(widget)) layoutPosition.remove(widget);
+      //if (order.contains(widget)) order.remove(widget);
+      fresh.remove(widget);
+      widgets.remove(widget->property("id").toInt());
+
+      widget->clearFocus();           
+  }
+
+  delete widget;
+}
 
 void GLContext::makeCurrent()
 {
