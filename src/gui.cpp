@@ -105,6 +105,7 @@ void applyOpts(QObject* obj,const OptsPrivate& opts)
   ignoreOpts << "floatSingleStep" << "floatPageStep";
   ignoreOpts << "showFrame" << "showTitleBar" << "showMinimizeButton" << "showMaximizeButton" << "showCloseButton" << "showSystemMenu" << "stayOnTop";
   ignoreOpts << "initialGeometryX" << "initialGeometryY" << "initialGeometryWidth" << "initialGeometryHeight";
+  ignoreOpts << "modal";
 
   QHashIterator<QString,QVariant> it(opts.options);
 
@@ -291,6 +292,8 @@ Opts& Opts::frameShape(FrameShape shape) { opts->set("frameShape",(QFrame::Shape
 Opts& Opts::frameShadow(FrameShadow shadow) { opts->set("frameShadow",(QFrame::Shadow)shadow); return *this; }
 Opts& Opts::frameLineWidth(int width) { opts->set("lineWidth",width); return *this; }
 Opts& Opts::frameMidLineWidth(int width) { opts->set("midLineWidth",width); return *this; }
+
+Opts& Opts::modal(bool modal) { opts->set("modal",modal); return *this; }
 
 Opts& Opts::showFrame(bool showFrame) { opts->set("showFrame",showFrame); return *this; }
 Opts& Opts::showTitleBar(bool showTitleBar) { opts->set("showTitleBar",showTitleBar); return *this; }
@@ -1225,6 +1228,10 @@ void WindowBegin(int id,const char* iconFileName,const char* title,const Opts& o
 
     initializeWidget(id,window,*opts.opts);
   }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  window->setWindowModality(opts.opts->get<bool>("modal",false) ? Qt::ApplicationModal : Qt::NonModal);
 
   ///////////////////////////////////////////////////////////////////////////////////
   

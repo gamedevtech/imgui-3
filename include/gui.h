@@ -339,6 +339,7 @@ GUI_API Opts& frameLineWidth(int width);
 GUI_API Opts& frameMidLineWidth(int width);
 
 // Window
+GUI_API Opts& modal(bool modal);
 GUI_API Opts& showTitleBar(bool showTitleBar);
 GUI_API Opts& showMinimizeButton(bool showMinimizeButton);
 GUI_API Opts& showMaximizeButton(bool showMaximizeButton);
