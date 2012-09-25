@@ -258,6 +258,8 @@ Opts& Opts::enabled(bool enabled) { opts->set("enabled",enabled); return *this; 
 
 Opts& Opts::cursor(CursorShape cursor) { opts->set("cursor",QCursor((Qt::CursorShape)cursor)); return *this; }
 
+Opts& Opts::focusPolicy(FocusPolicy policy) { opts->set("focusPolicy",(Qt::FocusPolicy)policy); return *this; }
+
 Opts& Opts::alignText(int alignFlags) { opts->set("alignment",(Qt::Alignment)alignFlags); return *this; }
 
 Opts& Opts::readOnly(bool readOnly) { opts->set("readOnly",readOnly); return *this; }
@@ -1555,7 +1557,10 @@ void guiUpdate(bool wait)
   /// XXX: HACK  
   for(int i=0;i<showlist.size();i++)
   {
-    showlist[i]->show();
+    if (!showlist[i]->isVisible())
+    {
+      showlist[i]->show();
+    }
   }
   showlist.clear(); 
 

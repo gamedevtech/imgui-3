@@ -54,6 +54,15 @@ enum SizeConstraint
   SizeConstraintOff = 1
 };
 
+enum FocusPolicy
+{
+  FocusPolicyTab = 0x1,
+  FocusPolicyClick = 0x2,
+  FocusPolicyStrong = FocusPolicyTab | FocusPolicyClick | 0x8,
+  FocusPolicyWheel  = FocusPolicyStrong | 0x4,
+  FocusPolicyNoFocus = 0
+};
+
 enum SliderTicks
 {
   TicksOff = 0,
@@ -295,6 +304,8 @@ GUI_API Opts& margins(int left,int top,int right,int bottom);
 GUI_API Opts& enabled(bool enabled);
 
 GUI_API Opts& cursor(CursorShape cursor);
+
+GUI_API Opts& focusPolicy(FocusPolicy policy);
 
 // Label, LineEdit, GroupBox
 GUI_API Opts& alignText(int alignFlags);
