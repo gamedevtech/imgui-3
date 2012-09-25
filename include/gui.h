@@ -408,6 +408,9 @@ GUI_API void WindowEnd();
 
 GUI_API bool windowCloseRequest();
 
+GUI_API void raise();
+GUI_API void lower();
+
 GUI_API void FrameBegin(int id,const Opts& opts = Opts());
 GUI_API void FrameEnd();
 

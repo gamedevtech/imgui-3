@@ -1307,6 +1307,20 @@ bool windowCloseRequest()
   return ((IMWindow*)widgetStack[0])->closeRequest;  
 }
 
+void raise()
+{
+  assert(widgetStack.empty()==false);  
+  assert(widgetStack.top()!=0);
+  return widgetStack.top()->raise();  
+}
+
+void lower()
+{
+  assert(widgetStack.empty()==false);  
+  assert(widgetStack.top()!=0);
+  return widgetStack.top()->lower();
+}
+
 void FrameBegin(int id,const Opts& opts)
 {
   IMFrame* frame = fetchCachedWidget<IMFrame>(id);
