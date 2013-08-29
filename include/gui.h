@@ -434,6 +434,8 @@ GUI_API void GridLayoutEnd();
 GUI_API char* FileOpenDialog(const char* caption = 0,const char* dir = 0,const char* filter = 0);
 GUI_API char* FileSaveDialog(const char* caption = 0,const char* dir = 0,const char* filter = 0);
 
+GUI_API void MessageDialog(const char* text);
+
 GUI_API int widgetWidth();
 GUI_API int widgetHeight();
 GUI_API bool widgetResized(int* width = 0,int* height = 0);

@@ -35,6 +35,7 @@
 #include <QPlastiqueStyle>
 #include <QDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -1434,6 +1435,13 @@ char* FileSaveDialog(const char* caption,const char* dir,const char* filter)
   if (fileName.size()==0) return 0;
   fileName.append('\0');  
   return fileName.data();
+}
+
+void MessageDialog(const char* text)
+{
+  QMessageBox msgBox;
+  msgBox.setText(text);
+  msgBox.exec();
 }
 
 void pixmapBlit(int width,int height,const unsigned char* data)
