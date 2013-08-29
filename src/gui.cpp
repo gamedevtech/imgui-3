@@ -272,6 +272,8 @@ Opts& Opts::cursor(CursorShape cursor) { opts->set("cursor",QCursor((Qt::CursorS
 
 Opts& Opts::focusPolicy(FocusPolicy policy) { opts->set("focusPolicy",(Qt::FocusPolicy)policy); return *this; }
 
+Opts& Opts::toolTip(char* text) { opts->set("toolTip",text); return *this; }
+
 Opts& Opts::alignText(int alignFlags) { opts->set("alignment",(Qt::Alignment)alignFlags); return *this; }
 
 Opts& Opts::readOnly(bool readOnly) { opts->set("readOnly",readOnly); return *this; }

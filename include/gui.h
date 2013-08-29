@@ -309,6 +309,8 @@ GUI_API Opts& cursor(CursorShape cursor);
 
 GUI_API Opts& focusPolicy(FocusPolicy policy);
 
+GUI_API Opts& toolTip(char* text);
+
 // Label, LineEdit, GroupBox
 GUI_API Opts& alignText(int alignFlags);
 
